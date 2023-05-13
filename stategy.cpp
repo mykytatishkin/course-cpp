@@ -47,7 +47,6 @@ public:
     }
 };
 
-
 int main()
 {
     ResourceReader* resourceReader = new ResourceReader(new NewsSiteReader());
