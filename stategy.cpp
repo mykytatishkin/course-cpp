@@ -51,19 +51,24 @@ public:
 int main()
 {
     ResourceReader* resourceReader = new ResourceReader(new NewsSiteReader());
-    vector<string> v = vector<string>();
+    vector<string> linkCollection = vector<string>();
 
     string url = "https://news.com";
     resourceReader->read(url);
-
+    linkCollection.push_back(url);
 
     url = "https://facebook.com";
     resourceReader->setStrategy(new SocialNetworkReader());
+    linkCollection.push_back(url);
 
     url = "@news_channel_tg";
     resourceReader->setStrategy(new TelegramChannelReader());
     resourceReader->read(url);
+    linkCollection.push_back(url);
 
+    for(auto link : linkCollection ) {
+        cout << link << " ";
+    }
 
     
     return 0;
