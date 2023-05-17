@@ -26,6 +26,19 @@ public:
     }
 };
 
+class Url{
+public:
+    string url;
+    Url (string url) {
+        this->url = url;
+    }
+    void changeUrl(string nUrl) {
+        this->url = nUrl;
+    }
+    ~Url() {
+    }
+};
+
 class NewsSiteReader : public Reader {
 public:
     void parse(string& url) override {
@@ -52,23 +65,25 @@ int main()
     ResourceReader* resourceReader = new ResourceReader(new NewsSiteReader());
     vector<string> linkCollection = vector<string>();
 
-    string url = "https://news.com";
-    resourceReader->read(url);
-    linkCollection.push_back(url);
+    Url url = Url("https://news.com");
+    resourceReader->read(url.url);
+    linkCollection.push_back(url.url);
 
-    url = "https://facebook.com";
+    url.changeUrl("https://facebook.com");
     resourceReader->setStrategy(new SocialNetworkReader());
-    linkCollection.push_back(url);
+    linkCollection.push_back(url.url);
 
-    url = "@news_channel_tg";
+    url.changeUrl("@news_channel_tg");
     resourceReader->setStrategy(new TelegramChannelReader());
-    resourceReader->read(url);
-    linkCollection.push_back(url);
+    resourceReader->read(url.url);
+    linkCollection.push_back(url.url);
 
     for(auto link : linkCollection ) {
         cout << link << " ";
     }
 
-    
+    int n = 4;
+    int c[n];
+
     return 0;
 }
