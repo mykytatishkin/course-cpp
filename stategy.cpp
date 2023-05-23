@@ -84,7 +84,7 @@ int main()
     linkCollection.push_back(url.url);
 
     url.changeUrl("https://facebook.com");
-    cin >> url; 
+    cin >> url;
     resourceReader->setStrategy(new SocialNetworkReader());
     linkCollection.push_back(url.url);
 
