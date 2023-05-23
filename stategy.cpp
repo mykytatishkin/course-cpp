@@ -37,12 +37,24 @@ public:
     }
     ~Url() {
     }
+
+    friend std::ostream& operator<<(std::ostream& out, const Url& u) {
+        out << "URL: " << u.url << endl;
+        return out;
+    }
+
+    friend std::istream& operator>>(std::istream& in, Url& u) {
+        cout << "Enter url: ";
+        in >> u.url;
+        return in;
+    }
 };
 
 class NewsSiteReader : public Reader {
 public:
     void parse(string& url) override {
         cout << "Parsing from site" << url << endl;
+        // You can write some parse code and it will work
     } 
 };
 
@@ -50,6 +62,7 @@ class SocialNetworkReader : public Reader {
 public:
     void parse(string& url) override {
         cout << "Parsing from social network" << url << endl;
+        // You can write some parse code and it will work
     } 
 };
 
@@ -57,6 +70,7 @@ class TelegramChannelReader : public Reader {
 public:
     void parse(string& url) override {
         cout << "Parsing from telegram" << url << endl;
+        // You can write some parse code and it will work
     }
 };
 
@@ -70,6 +84,7 @@ int main()
     linkCollection.push_back(url.url);
 
     url.changeUrl("https://facebook.com");
+    cin >> url; 
     resourceReader->setStrategy(new SocialNetworkReader());
     linkCollection.push_back(url.url);
 
