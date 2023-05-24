@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <vector>
+#include <map>
 using namespace std;
 
 class Reader {  
@@ -28,8 +28,10 @@ public:
 
 class Url{
 public:
+    int id;
     string url;
-    Url (string url) {
+    Url (int nId,string url) {
+        this->id = id;
         this->url = url;
     }
     void changeUrl(string nUrl) {
@@ -48,7 +50,14 @@ public:
         in >> u.url;
         return in;
     }
+
+    Url& operator++() {
+        ++id;
+        return *this;
+    }
 };
+
+
 
 class NewsSiteReader : public Reader {
 public:
@@ -77,28 +86,34 @@ public:
 int main()
 {
     ResourceReader* resourceReader = new ResourceReader(new NewsSiteReader());
-    vector<string> linkCollection = vector<string>();
+    map<int, string> linkCollection = map<int, string>();
 
-    Url url = Url("https://news.com");
+    Url url = Url(1,"https://news.com");
     resourceReader->read(url.url);
-    linkCollection.push_back(url.url);
+    linkCollection.insert(pair<int, string>(url.id, url.url));
 
     url.changeUrl("https://facebook.com");
     cin >> url;
+    url.id++;
+
     resourceReader->setStrategy(new SocialNetworkReader());
-    linkCollection.push_back(url.url);
+    linkCollection.insert(pair<int, string>(url.id, url.url));
 
     url.changeUrl("@news_channel_tg");
+    url.id++;
+
     resourceReader->setStrategy(new TelegramChannelReader());
     resourceReader->read(url.url);
-    linkCollection.push_back(url.url);
+    linkCollection.insert(pair<int, string>(url.id, url.url));
 
-    for(auto link : linkCollection ) {
-        cout << link << " ";
+    std::map<int, string>::iterator it = linkCollection.begin();
+ 
+    // Iterate through the map and print the elements
+    while (it != linkCollection.end())
+    {
+        std::cout << "Key: " << it->first << ", Value: " << it->second << std::endl;
+        ++it;
     }
-
-    int n = 4;
-    int c[n];
 
     return 0;
 }
